@@ -14,13 +14,13 @@ const DETAILTABS = (
 );
 
 const NNILOGO = (
-    <Link to={'/oview'}>
+    
         <img
             src={require('../../static/img/logo2.png')}
             alt="NNI logo"
             style={{height: 40}}
         />
-    </Link>
+    
 );
 
 export { OVERVIEWTABS, DETAILTABS, NNILOGO };

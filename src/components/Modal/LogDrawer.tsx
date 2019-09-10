@@ -1,6 +1,7 @@
 import * as React from 'react';
 import axios from 'axios';
 import { Drawer, Tabs, Row, Col, Button, Icon } from 'antd';
+import { connect } from 'react-redux';
 import { DOWNLOAD_IP } from '../../static/const';
 import { downFile } from '../../static/function';
 const { TabPane } = Tabs;
@@ -11,6 +12,7 @@ interface LogDrawerProps {
     isVisble: boolean;
     closeDrawer: () => void;
     activeTab?: string;
+    port: string;
 }
 
 interface LogDrawerState {
@@ -18,6 +20,7 @@ interface LogDrawerState {
     dispatcherLogStr: string;
     isLoading: boolean;
     isLoadispatcher: boolean;
+    port: string;
 }
 
 class LogDrawer extends React.Component<LogDrawerProps, LogDrawerState> {
@@ -30,7 +33,8 @@ class LogDrawer extends React.Component<LogDrawerProps, LogDrawerState> {
             nniManagerLogStr: 'nnimanager',
             dispatcherLogStr: 'dispatcher',
             isLoading: false,
-            isLoadispatcher: false
+            isLoadispatcher: false,
+            port: this.props.port
         };
     }
 
@@ -38,7 +42,8 @@ class LogDrawer extends React.Component<LogDrawerProps, LogDrawerState> {
         if (this._isLogDrawer === true) {
             this.setState({ isLoading: true }, () => {
                 axios(`${DOWNLOAD_IP}/nnimanager.log`, {
-                    method: 'GET'
+                    method: 'GET',
+                    headers:{'upstream': this.state.port}
                 })
                     .then(res => {
                         if (res.status === 200) {
@@ -65,7 +70,8 @@ class LogDrawer extends React.Component<LogDrawerProps, LogDrawerState> {
         if (this._isLogDrawer === true) {
             this.setState({ isLoadispatcher: true }, () => {
                 axios(`${DOWNLOAD_IP}/dispatcher.log`, {
-                    method: 'GET'
+                    method: 'GET',
+                    headers:{'upstream': this.state.port}
                 })
                     .then(res => {
                         if (res.status === 200) {
@@ -203,4 +209,6 @@ class LogDrawer extends React.Component<LogDrawerProps, LogDrawerState> {
     }
 }
 
-export default LogDrawer;
+// export default LogDrawer;
+export default connect<any, any, any>((state,props)=>({port:state.PortReducer}) )(LogDrawer);
+

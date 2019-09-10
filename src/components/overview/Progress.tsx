@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Row, Col, Popover, Button, message } from 'antd';
+import {  Row, Col, Popover, message } from 'antd';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { MANAGER_IP, CONTROLTYPE } from '../../static/const';
@@ -158,12 +158,12 @@ class Progressed extends React.Component<ProgressProps, ProgressState> {
         }
     }
 
-    componentWillReceiveProps() {
-        const { trialProfile } = this.props;
-        if (this.conInput !== null) {
-            this.conInput.value = trialProfile.runConcurren.toString();
-        }
-    }
+    // componentWillReceiveProps() {
+    //     const { trialProfile } = this.props;
+    //     if (this.conInput !== null) {
+    //         this.conInput.value = trialProfile.runConcurren.toString();
+    //     }
+    // }
 
     componentDidMount() {
         this._isMounted = true;
@@ -175,12 +175,13 @@ class Progressed extends React.Component<ProgressProps, ProgressState> {
 
     render() {
         const { trialProfile, trialNumber, bestAccuracy, status, errors } = this.props;
-        const { isEnable, btnName, cancelSty, isShowLogDrawer } = this.state;
+        const {  isShowLogDrawer } = this.state;
         const bar2 = trialNumber.totalCurrentTrial - trialNumber.waitTrial - trialNumber.unknowTrial;
         const bar2Percent = (bar2 / trialProfile.MaxTrialNum) * 100;
         const percent = (trialProfile.execDuration / trialProfile.maxDuration) * 100;
         const runDuration = convertTime(trialProfile.execDuration);
         const temp = trialProfile.maxDuration - trialProfile.execDuration;
+        //console.log(trialProfile.runConcurren.toString());
         let remaining;
         let errorContent;
         if (temp < 0) {
@@ -249,31 +250,12 @@ class Progressed extends React.Component<ProgressProps, ProgressState> {
                             <div className="time">{remaining}</div>
                         </Row>
                     </Col>
-                    <Col span={12}>
+                    <Col span={6}>
                         {/* modify concurrency */}
-                        <p>Concurrency</p>
-                        <Row className="inputBox">
-                            <input
-                                type="number"
-                                disabled={isEnable}
-                                onChange={this.getUserTrialConcurrency}
-                                className="concurrencyInput"
-                                ref={(input) => this.conInput = input}
-                            />
-                            <Button
-                                type="primary"
-                                className="tableButton editStyle"
-                                onClick={this.editTrialConcurrency}
-                            >{btnName}
-                            </Button>
-                            <Button
-                                type="primary"
-                                onClick={this.cancelFunction}
-                                style={{ display: cancelSty, marginLeft: 1 }}
-                                className="tableButton editStyle"
-                            >
-                                Cancel
-                            </Button>
+                        
+                        <Row className="basic colorOfbasic">
+                            <p>Concurrency</p>
+                            <div>{trialProfile.runConcurren.toString()}</div>
                         </Row>
                     </Col>
                 </Row>

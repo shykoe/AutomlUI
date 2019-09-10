@@ -57,8 +57,9 @@ class SlideBar extends React.Component<SliderProps, SliderState> {
     }
 
     getNNIversion = () => {
-        axios(`/${this.state.port}${MANAGER_IP}/version`, {
-            method: 'GET'
+        axios(`${MANAGER_IP}/version`, {
+            method: 'GET',
+            headers:{'upstream': this.state.port}
         })
             .then(res => {
                 if (res.status === 200 && this._isMounted) {
